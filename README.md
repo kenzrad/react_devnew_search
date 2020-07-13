@@ -1,3 +1,6 @@
+# react_devnew_search
+React/Redux Application for Searching Development News
+
 Here's what we'd like to see for an at-home exercise:
 
 Using React and Redux:
