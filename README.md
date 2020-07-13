@@ -5,7 +5,7 @@ The site is deployed via [Github pages](https://kenzrad.github.io/react-search-n
 
 ## Technologies
 - React (create-react-app)
-- Redux (redux toolkit)
+- Redux (redux-toolkit, redux-persist, redux-logger)
 - Axios for Hacker News API service
 - Bootstrap (simple styling)
 
