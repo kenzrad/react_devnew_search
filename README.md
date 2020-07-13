@@ -1,8 +1,15 @@
-# react_devnew_search
-React/Redux Application for Searching Development News
+# react-search-news
+React/Redux Application for getting development news (via Hacker News API)
 
-[Github pages site](https://kenzrad.github.io/react-search-news/)
+The site is deployed via [Github pages](https://kenzrad.github.io/react-search-news/)
 
+## Technologies
+- React (create-react-app)
+- Redux (redux toolkit)
+- Axios for Hacker News API service
+- Bootstrap (simple styling)
+
+## Instructions:
 Here's what we'd like to see for an at-home exercise:
 
 Using React and Redux:
