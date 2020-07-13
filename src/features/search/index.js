@@ -15,7 +15,7 @@ export function Search() {
    */
   function fetchArticles(type, query) {
     // In a full size app, I would add this as a services to a services folder so it can be easily found and reused (with an api services helper to create request url and assign methods)
-    const BASE_URL = 'http://hn.algolia.com/api/v1/';
+    const BASE_URL = 'https://hn.algolia.com/api/v1/';
     // if a sorting feature is added to the search, would at to url builder (for now, always search?query unless the query is blank)
     const queryTypeMap = {
       FEATURED: 'search?tags=front_page',
