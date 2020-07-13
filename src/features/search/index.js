@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { setSearchValue, setSearchResults, selectSearchValue} from './searchSlice';
+import { useDispatch } from 'react-redux';
+import { setSearchValue, setSearchResults } from './searchSlice';
 import axios from 'axios';
+import { removeSpecialCharacters } from '../../utils/strUtils'
 
 export function Search() {
-  const search = useSelector(selectSearchValue);
   const dispatch = useDispatch();
-  const [searchQuery, setSearchQuery] = useState('test');
+  const [searchQuery, setSearchQuery] = useState('');
 
   /**
    * Get request to Hacker News API, add articles object to state
@@ -14,14 +14,15 @@ export function Search() {
    * @param {string} query
    */
   function fetchArticles(type, query) {
+    // In a full size app, I would add this as a services to a services folder so it can be easily found and reused (with an api services helper to create request url and assign methods)
     const BASE_URL = 'http://hn.algolia.com/api/v1/';
+    // if a sorting feature is added to the search, would at to url builder (for now, always search?query unless the query is blank)
     const queryTypeMap = {
-      FEATURED: 'topstories',
+      FEATURED: 'search?tags=front_page',
       SEARCH: 'search?query=',
       SEARCH_DATE: 'search_by_date?query='
     }
-
-    let searchResults;
+  
     let url = BASE_URL;
     if (query && type && queryTypeMap[type] !== -1) {
         url += (queryTypeMap[type] + query);
@@ -30,7 +31,6 @@ export function Search() {
     }
 
     axios.get(url).then(res => {
-      console.log(res.data.hits);
       let searchResults = [];
       if (res.data && res.data.hits) {
         for (var i = 0; i < res.data.hits.length; i++) {
@@ -46,30 +46,36 @@ export function Search() {
       }
       dispatch(setSearchResults(searchResults));
     }).catch(function (error) {
-      console.log(error);
+      // error log
     });
   }
 
-  function submitSearch(query) {
+  /**
+   * Set search state values and fires api request function (handles falsey query values)
+   * @param {String} query - can be empty string
+   */
+  function submitSearch(e, query) {
+    e.preventDefault();
     dispatch(setSearchValue(query));
     fetchArticles('SEARCH', query);
+    setSearchQuery('');
   };
 
   return (
-    <div className="form-inline">
+    <form className="form-inline" onSubmit={(e) => submitSearch(e, removeSpecialCharacters(searchQuery))}>
         <input
-          className="form-control"
+          className="form-control input-lg"
           aria-label="Search query field"
           value={searchQuery}
+          placeholder="Search Hacker News"
           onChange={e => setSearchQuery(e.target.value)}
         />
         <button 
-          type="button" 
+          type="submit" 
           className="btn btn-dark ml-2"
-          onClick={() => submitSearch(searchQuery)}
         >
           Search
         </button>
-    </div>
+    </form>
   );
 }

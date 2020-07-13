@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { reduceAndSliceArr } from '../../utils/arrUtils'
 
 export const searchBarSlice = createSlice({
   name: 'searchBar',
@@ -10,7 +11,10 @@ export const searchBarSlice = createSlice({
   reducers: {
     setSearchValue: (state, action) => {
       state.value = action.payload;
-      state.history.push(action.payload);
+      if (!!action.payload) {
+        state.history.push(action.payload);
+        state.history = reduceAndSliceArr(state.history);
+      }
     },
     setSearchResults: (state, action) => {
       state.results = action.payload;
